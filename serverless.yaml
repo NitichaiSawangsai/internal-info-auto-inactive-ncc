@@ -1,0 +1,69 @@
+# service: cryptostats-backend
+
+# frameworkVersion: '2'
+# useDotenv: true
+# # variablesResolutionMode: 20210326
+
+# plugins:
+#   - serverless-offline
+
+# provider:
+#   name: aws
+#   runtime: nodejs12.x
+
+#   environment:
+#     SERVER_PORT: ${env:SERVER_PORT}
+#     VERSION: ${env:VERSION}
+
+#     DATABASE_TYPE: ${env:DATABASE_TYPE}
+#     DATABASE_HOST: ${env:DATABASE_HOST}
+#     DATABASE_PORT: ${env:DATABASE_PORT}
+#     DATABASE_USERNAME: ${env:DATABASE_PASSWORD}
+#     DATABASE_NAME: ${env:DATABASE_NAME}
+#     DATABASE_SYNC: 'disable'
+#     DATABASE_SCHEMA: ${env:DATABASE_SCHEMA}
+#     TZ: 'UTC'
+
+#     ELASTICSEARCH_URL: ${env:ELASTICSEARCH_URL}
+#     ELASTICSEARCH_PREFIX: ${env:ELASTICSEARCH_PREFIX}
+    
+#     ACCESS_KEY_ID: ${env:ACCESS_KEY_ID}
+#     SECRET_ACCESS_KEY: ${env:SECRET_ACCESS_KEY}
+#     REGION: ${env:REGION}
+#     CLOUD_WATCH_LOG_GROUP: ${env:CLOUD_WATCH_LOG_GROUP}
+#     CLOUD_WATCH_LOG_STREAM: ${env:CLOUD_WATCH_LOG_STREAM}
+
+# functions:
+#   main:
+#     handler: dist/serverless.handler
+#     events:
+#       - http:
+#           method: ANY
+#           path: /
+#       - http:
+#           method: ANY
+#           path: '{proxy+}'
+
+
+service:
+  name: ncc-internal-info-auto-inactive
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+          cors: true
+      - http:
+          method: ANY
+          path: '{proxy+}'
+          cors: true

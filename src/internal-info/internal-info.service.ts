@@ -11,6 +11,7 @@ export class InternalInfoService {
   ) {}
 
   autoInactive() {
+    console.log('aaaa <><><><><><><>< \n\n\n\n\n');
     return 122;
   }
 }

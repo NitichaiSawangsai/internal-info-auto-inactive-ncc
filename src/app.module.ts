@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import serverConfig from './config/server.config';
 import elasticsearchConfig from './config/elasticsearch.config';
 import databaseConfig from './config/database.config';
@@ -10,10 +8,10 @@ import awsConfig from './config/aws.config';
 import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { InternalInfoModule } from './internal-info/internal-info.module';
+import { LoggerModule } from './logger/logger.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './logging.interceptor';
-import { LoggerModule } from './logger/logger.module';
-import { InternalInfoModule } from './internal-info/internal-info.module';
 
 @Module({
   imports: [
@@ -33,7 +31,6 @@ import { InternalInfoModule } from './internal-info/internal-info.module';
         DATABASE_USERNAME: Joi.string().required(),
         DATABASE_PASSWORD: Joi.string().required(),
         DATABASE_NAME: Joi.string().required(),
-        DATABASE_SYNC: Joi.string().default('disable'),
         DATABASE_TYPE: Joi.string().default('postgres'),
         DATABASE_SCHEMA: Joi.string().required(),
         ELASTICSEARCH_URL: Joi.string()
@@ -66,22 +63,20 @@ import { InternalInfoModule } from './internal-info/internal-info.module';
         database: configService.get('database.name'),
         schema: configService.get('database.schema'),
         autoLoadEntities: true,
-        synchronize: configService.get('database.syncEnabled') === 'enable',
+        synchronize: false,
         namingStrategy: new SnakeNamingStrategy(),
       }),
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    // LoggerModule,
+    LoggerModule,
     InternalInfoModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: LoggingInterceptor,
-    // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
   ],
 })
 export class AppModule {}
