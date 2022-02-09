@@ -13,6 +13,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './logging.interceptor';
 import { LoggerModule } from './logger/logger.module';
+import { InternalInfoModule } from './internal-info/internal-info.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { LoggerModule } from './logger/logger.module';
       inject: [ConfigService],
     }),
     // LoggerModule,
+    InternalInfoModule,
   ],
   controllers: [AppController],
   providers: [
