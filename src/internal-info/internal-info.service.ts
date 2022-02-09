@@ -27,6 +27,7 @@ export class InternalInfoService {
             new Brackets((qb) => {
               qb.where('internal.expireDate IS NULL');
               qb.andWhere('internal.createdAt > :date', {
+                // ยังไม่สมบูรณ์
                 date: moment().add(1, 'M').toDate(),
               });
             }),
@@ -41,6 +42,8 @@ export class InternalInfoService {
           );
         }),
       );
+
+    console.log('=>> ', moment().add(1, 'M').toDate());
 
     return queryBuilder
       .select([
