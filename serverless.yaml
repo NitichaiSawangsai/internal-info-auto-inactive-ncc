@@ -42,7 +42,7 @@ provider:
 
 functions:
   internal-info-auto-inactive:
-    handler: src/serverless.handler
+    handler: dist/serverless.handler
     events:
       - http:
           method: ANY
